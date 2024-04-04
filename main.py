@@ -2,6 +2,7 @@ import pygame as pg
 import numpy as np
 from camera import Camera
 from objects.cube import Cube
+from math import *
 import sys
 
 WHITE = (255, 255, 255)
@@ -16,9 +17,48 @@ projection_matrix = np.matrix([
     [0, 0, 0]
 ])
 
+def get_rotation_x_matrix(radians):
+    sin = np.sin(radians)
+    cos = np.cos(radians)
+
+    matrix = np.matrix([
+        [1, 0, 0],
+        [0, cos, -sin],
+        [0, sin, cos]
+    ])
+
+    return matrix
+
+def get_rotation_y_matrix(radians):
+    sin = np.sin(radians)
+    cos = np.cos(radians)
+
+    matrix = np.matrix([
+        [cos, 0, sin],
+        [0, 1, 0],
+        [-sin, 0, cos]
+    ])
+
+    return matrix
+
+def get_rotation_z_matrix(radians):
+    sin = np.sin(radians)
+    cos = np.cos(radians)
+
+    matrix = np.matrix([
+        [cos, -sin, 0],
+        [sin, cos, 0],
+        [0, 0, 1]
+    ])
+
+    return matrix
+
+    
+
 scale = 30
 
 circle_pos = (WINDOW_X_SIZE / 2, WINDOW_Y_SIZE / 2)
+
 
 class GraphicsEngine:
     def __init__(self, win_size=(int,int)):
@@ -44,11 +84,13 @@ class GraphicsEngine:
                     pg.quit()
                     sys.exit()
 
-    def draw(self):
+    def draw(self, angle):
         self.screen.fill(WHITE)
         for obj in self.objects:
             for point in obj.points:
-                projected2d = np.dot(projection_matrix, point)
+                rotated2d = np.dot(get_rotation_z_matrix(angle), point)
+                rotated2d = np.dot(get_rotation_y_matrix(angle), rotated2d)
+                projected2d = np.dot(projection_matrix, rotated2d)
                 x = int(projected2d[0][0] * scale) + circle_pos[0]
                 y = int(projected2d[1][0] * scale) + circle_pos[1]
                 pg.draw.circle(self.screen, BLACK, (x,y), 5)
@@ -58,9 +100,11 @@ class GraphicsEngine:
         pg.display.flip()
 
     def run(self):
+        angle = 0
         while True:
+            angle += 0.01
             self.check_events()
-            self.draw()
+            self.draw(angle)
             self.render()
             self.clock.tick(60)
 
