@@ -87,13 +87,25 @@ class GraphicsEngine:
     def draw(self, angle):
         self.screen.fill(WHITE)
         for obj in self.objects:
-            for point in obj.points:
-                rotated2d = np.dot(get_rotation_z_matrix(angle), point)
+            for line in obj.lines:
+                rotated2d = np.dot(get_rotation_z_matrix(angle), line.a)
                 rotated2d = np.dot(get_rotation_y_matrix(angle), rotated2d)
+                rotated2db = np.dot(get_rotation_z_matrix(angle), line.b)
+                rotated2db = np.dot(get_rotation_y_matrix(angle), rotated2db)
+
                 projected2d = np.dot(projection_matrix, rotated2d)
+                projected2db = np.dot(projection_matrix, rotated2db)
+                
                 x = int(projected2d[0][0] * scale) + circle_pos[0]
                 y = int(projected2d[1][0] * scale) + circle_pos[1]
+                x2 = int(projected2db[0][0] * scale) + circle_pos[0]
+                y2 = int(projected2db[1][0] * scale) + circle_pos[1]
+
                 pg.draw.circle(self.screen, BLACK, (x,y), 5)
+                pg.draw.circle(self.screen, BLACK, (x2,y2), 5)
+
+                pg.draw.line(self.screen, obj.color, (x,y), (x2,y2))
+
 
 
     def render(self):
