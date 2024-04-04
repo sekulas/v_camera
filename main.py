@@ -3,6 +3,7 @@ import numpy as np
 from camera import Camera
 from objects.cube import Cube
 from math import *
+import matrix_transformations
 import sys
 
 WHITE = (255, 255, 255)
@@ -15,45 +16,7 @@ projection_matrix = np.matrix([
     [1, 0, 0],
     [0, 1, 0],
     [0, 0, 0]
-])
-
-def get_rotation_x_matrix(radians):
-    sin = np.sin(radians)
-    cos = np.cos(radians)
-
-    matrix = np.matrix([
-        [1, 0, 0],
-        [0, cos, -sin],
-        [0, sin, cos]
-    ])
-
-    return matrix
-
-def get_rotation_y_matrix(radians):
-    sin = np.sin(radians)
-    cos = np.cos(radians)
-
-    matrix = np.matrix([
-        [cos, 0, sin],
-        [0, 1, 0],
-        [-sin, 0, cos]
-    ])
-
-    return matrix
-
-def get_rotation_z_matrix(radians):
-    sin = np.sin(radians)
-    cos = np.cos(radians)
-
-    matrix = np.matrix([
-        [cos, -sin, 0],
-        [sin, cos, 0],
-        [0, 0, 1]
-    ])
-
-    return matrix
-
-    
+])    
 
 scale = 30
 
@@ -88,10 +51,10 @@ class GraphicsEngine:
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
-                rotated2d = np.dot(get_rotation_z_matrix(angle), line.a)
-                rotated2d = np.dot(get_rotation_y_matrix(angle), rotated2d)
-                rotated2db = np.dot(get_rotation_z_matrix(angle), line.b)
-                rotated2db = np.dot(get_rotation_y_matrix(angle), rotated2db)
+                rotated2d = np.dot(matrix_transformations.get_rotation_z_matrix(angle), line.a)
+                rotated2d = np.dot(matrix_transformations.get_rotation_y_matrix(angle), rotated2d)
+                rotated2db = np.dot(matrix_transformations.get_rotation_z_matrix(angle), line.b)
+                rotated2db = np.dot(matrix_transformations.get_rotation_y_matrix(angle), rotated2db)
 
                 projected2d = np.dot(projection_matrix, rotated2d)
                 projected2db = np.dot(projection_matrix, rotated2db)
