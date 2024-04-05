@@ -61,6 +61,10 @@ class GraphicsEngine:
                     self.camera.move_forward()
                 if event.key == pg.K_s:
                     self.camera.move_back()
+                if event.key == pg.K_q:
+                    self.camera.rotate_left()
+                if event.key == pg.K_e:
+                    self.camera.rotate_right()
 
     def draw(self):
         self.screen.fill(WHITE)
