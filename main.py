@@ -49,8 +49,14 @@ class GraphicsEngine:
                     sys.exit()
                 if event.key == pg.K_SPACE:
                     self.camera.move_up()
+                if event.key == pg.K_LSHIFT:
+                    self.camera.move_down()
+                if event.key == pg.K_d:
+                    self.camera.move_right()
+                if event.key == pg.K_a:
+                    self.camera.move_left()
 
-    def draw(self, angle):
+    def draw(self):
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
@@ -73,12 +79,18 @@ class GraphicsEngine:
         pg.display.flip()
 
     def run(self):
-        angle = 0
         while True:
             self.check_events()
-            self.draw(angle)
+            self.draw()
             self.render()
             self.clock.tick(60)
+
+    def update_points(self, transform_matrix):
+        for obj in self.objects:
+            for idx, point in enumerate(obj.points):
+                new_point = np.dot(transform_matrix, point)
+                for p in range(0, 3):
+                    obj.points[idx][p] = new_point[p]
 
 if __name__ == '__main__':
     app = GraphicsEngine((WINDOW_X_SIZE, WINDOW_Y_SIZE))

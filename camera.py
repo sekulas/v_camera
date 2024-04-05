@@ -11,9 +11,16 @@ class Camera:
 
     def move_up(self):
         translation_up = matrix_transformations.get_translation_matrix(0, self.step, 0)
-        for obj in self.app.objects:
-            for idx, point in enumerate(obj.points):
-                new_point = np.dot(translation_up, point)
-                
-                for p in range(0, 3):
-                    obj.points[idx][p] = new_point[p]
+        self.app.update_points(translation_up)
+
+    def move_down(self):
+        translation_down = matrix_transformations.get_translation_matrix(0, -self.step, 0)
+        self.app.update_points(translation_down)
+
+    def move_left(self):
+        translation_left = matrix_transformations.get_translation_matrix(self.step, 0, 0)
+        self.app.update_points(translation_left)
+
+    def move_right(self):
+        translation_right = matrix_transformations.get_translation_matrix(-self.step, 0, 0)
+        self.app.update_points(translation_right)
