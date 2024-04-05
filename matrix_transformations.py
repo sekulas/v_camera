@@ -7,7 +7,7 @@ def get_rotation_x_matrix(radians):
     matrix = np.matrix([
         [1, 0, 0, 0],
         [0, cos, -sin, 0],
-        [0, sin, cos, 0]
+        [0, sin, cos, 0],
         [0, 0, 0, 1]
     ])
 
@@ -33,7 +33,7 @@ def get_rotation_z_matrix(radians):
     matrix = np.matrix([
         [cos, -sin, 0, 0],
         [sin, cos, 0, 0],
-        [0, 0, 1, 0]
+        [0, 0, 1, 0],
         [0, 0, 0, 1]
     ])
 

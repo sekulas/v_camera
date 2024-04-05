@@ -40,3 +40,19 @@ class Camera:
     def rotate_right(self):
         rotation_right = matrix_transformations.get_rotation_y_matrix(-self.rotationDegree)
         self.app.update_points(rotation_right)
+
+    def rotate_up(self):
+        rotate_up = matrix_transformations.get_rotation_x_matrix(self.rotationDegree)
+        self.app.update_points(rotate_up)
+    
+    def rotate_down(self):
+        rotate_down = matrix_transformations.get_rotation_x_matrix(-self.rotationDegree)
+        self.app.update_points(rotate_down)
+    
+    def rotate_clockwise(self):
+        rotate_clockwise = matrix_transformations.get_rotation_z_matrix(self.rotationDegree)
+        self.app.update_points(rotate_clockwise)
+    
+    def rotate_counter_clockwise(self):
+        rotate_counter_clockwise = matrix_transformations.get_rotation_z_matrix(-self.rotationDegree)
+        self.app.update_points(rotate_counter_clockwise)

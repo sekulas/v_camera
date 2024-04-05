@@ -45,7 +45,7 @@ class GraphicsEngine:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-                
+
         keys = pg.key.get_pressed()
 
         if keys[pg.K_ESCAPE]:
@@ -63,10 +63,19 @@ class GraphicsEngine:
             self.camera.move_forward()
         if keys[pg.K_s]:
             self.camera.move_back()
+
         if keys[pg.K_q]:
             self.camera.rotate_left()
         if keys[pg.K_e]:
             self.camera.rotate_right()
+        if keys[pg.K_u]:
+            self.camera.rotate_up()
+        if keys[pg.K_i]:
+            self.camera.rotate_down()
+        if keys[pg.K_o]:
+            self.camera.rotate_clockwise()
+        if keys[pg.K_p]:
+            self.camera.rotate_counter_clockwise()
 
     def draw(self):
         self.screen.fill(WHITE)
