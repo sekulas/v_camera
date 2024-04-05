@@ -5,7 +5,7 @@ from objects.line import Line
 BLACK = (0, 0, 0)
 
 class Cube:
-    def __init__(self, x, y, z, color, dist_to_camera, edge_len):
+    def __init__(self, x, y, z, color, dist_to_camera, edge_len = 100):
         self.points = []
         self.lines = []
         self.dist_to_camera = dist_to_camera
