@@ -33,9 +33,9 @@ class GraphicsEngine:
 
         self.clock = pg.time.Clock()
 
-        self.objects = [Cube(1, 1, 1, BLACK, 1, 1)]
+        self.objects = [Cube(1, 1, 1, BLACK, 1, 5)]
 
-        #self.camera = Camera(self)
+        self.camera = Camera(self)
 
     def check_events(self):
         for event in pg.event.get():
@@ -46,6 +46,8 @@ class GraphicsEngine:
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     sys.exit()
+                if event.key == pg.K_SPACE:
+                    self.camera.move_up()
 
     def draw(self, angle):
         self.screen.fill(WHITE)
@@ -77,7 +79,6 @@ class GraphicsEngine:
     def run(self):
         angle = 0
         while True:
-            angle += 0.01
             self.check_events()
             self.draw(angle)
             self.render()

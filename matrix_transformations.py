@@ -35,3 +35,13 @@ def get_rotation_z_matrix(radians):
     ])
 
     return matrix
+
+def get_translation_matrix(step_x, step_y, step_z):
+    matrix = np.matrix([
+        [1, 0, 0, step_x],
+        [0, 1, 0, step_y],
+        [0, 0, 1, step_z],
+        [0, 0, 0, 1]
+    ])
+
+    return matrix

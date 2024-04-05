@@ -15,7 +15,11 @@ class Cube:
         self.__create_points(x, y, z)
         self.__init_lines()
 
-    def __create_points(self, x, y, z): #TODO Use coordinates
+    def update_lines(self):
+        self.lines.clear()
+        self.__init_lines()
+
+    def __create_points(self, x, y, z):
         d = self.edge_len / 2
         self.points.append(np.matrix([[-d + x], [-d + y], [d + self.dist_to_camera + z]], dtype=np.float16))
         self.points.append(np.matrix([[-d + x], [d + y], [d + self.dist_to_camera + z]], dtype=np.float16))
