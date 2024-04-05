@@ -40,31 +40,33 @@ class GraphicsEngine:
 
         self.camera = Camera(self)
 
-    def check_events(self):
+    def check_events(self):        
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    pg.quit()
-                    sys.exit()
-                if event.key == pg.K_SPACE:
-                    self.camera.move_up()
-                if event.key == pg.K_LSHIFT:
-                    self.camera.move_down()
-                if event.key == pg.K_d:
-                    self.camera.move_right()
-                if event.key == pg.K_a:
-                    self.camera.move_left()
-                if event.key == pg.K_w:
-                    self.camera.move_forward()
-                if event.key == pg.K_s:
-                    self.camera.move_back()
-                if event.key == pg.K_q:
-                    self.camera.rotate_left()
-                if event.key == pg.K_e:
-                    self.camera.rotate_right()
+                
+        keys = pg.key.get_pressed()
+
+        if keys[pg.K_ESCAPE]:
+            pg.quit()
+            sys.exit()
+        if keys[pg.K_SPACE]:
+            self.camera.move_up()
+        if keys[pg.K_LSHIFT]:
+            self.camera.move_down()
+        if keys[pg.K_d]:
+            self.camera.move_right()
+        if keys[pg.K_a]:
+            self.camera.move_left()
+        if keys[pg.K_w]:
+            self.camera.move_forward()
+        if keys[pg.K_s]:
+            self.camera.move_back()
+        if keys[pg.K_q]:
+            self.camera.rotate_left()
+        if keys[pg.K_e]:
+            self.camera.rotate_right()
 
     def draw(self):
         self.screen.fill(WHITE)

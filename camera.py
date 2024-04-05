@@ -5,8 +5,8 @@ class Camera:
     def __init__(self, app):
         self.app = app
         self.zoom = 1
-        self.step = 50
-        self.rotationDegree = 0.05
+        self.step = 5
+        self.rotationDegree = 0.01
         self.zoom_change = 0.5
 
     def move_up(self):
