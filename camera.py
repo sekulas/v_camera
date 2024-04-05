@@ -24,3 +24,11 @@ class Camera:
     def move_right(self):
         translation_right = matrix_transformations.get_translation_matrix(-self.step, 0, 0)
         self.app.update_points(translation_right)
+
+    def move_forward(self):
+        translation_forward = matrix_transformations.get_translation_matrix(0, 0, -self.step)
+        self.app.update_points(translation_forward)
+
+    def move_back(self):
+        translation_back = matrix_transformations.get_translation_matrix(0, 0, self.step)
+        self.app.update_points(translation_back)
