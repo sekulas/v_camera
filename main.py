@@ -13,9 +13,10 @@ WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
 
 projection_matrix = np.matrix([
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 0]
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
 ])    
 
 scale = 30
@@ -53,13 +54,8 @@ class GraphicsEngine:
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
-                rotated2d = np.dot(matrix_transformations.get_rotation_z_matrix(angle), line.a)
-                rotated2d = np.dot(matrix_transformations.get_rotation_y_matrix(angle), rotated2d)
-                rotated2db = np.dot(matrix_transformations.get_rotation_z_matrix(angle), line.b)
-                rotated2db = np.dot(matrix_transformations.get_rotation_y_matrix(angle), rotated2db)
-
-                projected2d = np.dot(projection_matrix, rotated2d)
-                projected2db = np.dot(projection_matrix, rotated2db)
+                projected2d = np.dot(projection_matrix, line.a)
+                projected2db = np.dot(projection_matrix, line.b)
                 
                 x = int(projected2d[0][0] * scale) + circle_pos[0]
                 y = int(projected2d[1][0] * scale) + circle_pos[1]

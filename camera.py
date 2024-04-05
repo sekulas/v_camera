@@ -13,7 +13,7 @@ class Camera:
         translation_up = matrix_transformations.get_translation_matrix(0, self.step, 0)
         for obj in self.app.objects:
             for idx, point in enumerate(obj.points):
-                point_homogeneous = np.vstack((point, np.array([[1]])))
-                new_point_homogeneous = np.dot(translation_up, point_homogeneous)
-                obj.points[idx] = new_point_homogeneous[:-1]
-            obj.update_lines()
+                new_point = np.dot(translation_up, point)
+                
+                for p in range(0, 3):
+                    obj.points[idx][p] = new_point[p]
