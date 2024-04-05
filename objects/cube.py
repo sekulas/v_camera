@@ -5,10 +5,10 @@ from objects.line import Line
 BLACK = (0, 0, 0)
 
 class Cube:
-    def __init__(self, x, y, z, color, dist_to_camera, edge_len = 100):
+    def __init__(self, x, y, z, color, focal_len, edge_len = 100):
         self.points = []
         self.lines = []
-        self.dist_to_camera = dist_to_camera
+        self.focal_len = focal_len
         self.edge_len = edge_len
         self.color = color
 
@@ -17,15 +17,15 @@ class Cube:
 
     def __create_points(self, x, y, z):
         d = self.edge_len / 2
-        self.points.append(np.matrix([[-d + x], [-d + y], [d + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[-d + x], [d + y], [d + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [d + y], [d + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [-d + y], [d + self.dist_to_camera + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
 
-        self.points.append(np.matrix([[-d + x], [-d + y], [d*3 + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[-d + x], [d + y], [d*3 + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [d + y], [d*3 + self.dist_to_camera + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [-d + y], [d*3 + self.dist_to_camera + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
 
     def __init_lines(self):
         for i in range(0, 3):

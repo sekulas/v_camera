@@ -13,7 +13,7 @@ PURPLE = (171, 32, 253)
 WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
 
-DIST_TO_CAMERA = 1000
+FOCAL_LEN = 1000
 DIST_FROM_CENTER = 100
 
 projection_matrix = np.matrix([
@@ -34,9 +34,9 @@ class GraphicsEngine:
 
         self.clock = pg.time.Clock()
 
-        self.objects = [Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, BLACK, DIST_TO_CAMERA),
-                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, RED, DIST_TO_CAMERA),
-                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, DIST_TO_CAMERA)]
+        self.objects = [Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, BLACK, FOCAL_LEN),
+                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, RED, FOCAL_LEN),
+                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, FOCAL_LEN)]
 
         self.camera = Camera(self)
 
@@ -81,12 +81,14 @@ class GraphicsEngine:
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
-                line = line.project_3d_to_2d(DIST_TO_CAMERA)
-                
+                line = line.project_3d_to_2d(FOCAL_LEN)
+
                 x = int(line.a[0, 0])
                 y = int(line.a[1, 0])
+                z = int(line.a[2, 0])
                 x2 = int(line.b[0, 0])
                 y2 = int(line.b[1, 0])
+                z2 = int(line.b[2, 0])
 
                 pg.draw.circle(self.screen, BLACK, (x, y), 5)
                 pg.draw.circle(self.screen, BLACK, (x2, y2), 5)
