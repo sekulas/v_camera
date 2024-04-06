@@ -23,6 +23,8 @@ projection_matrix = np.matrix([
     [0, 0, 0, 1]
 ])    
 
+def is_point_visible(point: np.matrix, focal_len: float) -> bool:
+    return point[1,0] > focal_len
 
 class GraphicsEngine:
     def __init__(self, win_size=(int,int)):
@@ -81,20 +83,17 @@ class GraphicsEngine:
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
-                line = line.project_3d_to_2d(FOCAL_LEN)
-
-                x = int(line.a[0, 0])
-                y = int(line.a[1, 0])
-                z = int(line.a[2, 0])
-                x2 = int(line.b[0, 0])
-                y2 = int(line.b[1, 0])
-                z2 = int(line.b[2, 0])
-
-                pg.draw.circle(self.screen, BLACK, (x, y), 5)
-                pg.draw.circle(self.screen, BLACK, (x2, y2), 5)
-
-                pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
-
+                #if is_point_visible(a, FOCAL_LEN) and is_point_visible(b, FOCAL_LEN):
+                print(line.a)
+                line = line.clip().project_3d_to_2d(FOCAL_LEN)
+                if line.a[2, 0] >= 0 and line.b[2, 0] >= 0:
+                    x = float(line.a[0, 0])
+                    y = float(line.a[1, 0])
+                    x2 = float(line.b[0, 0])
+                    y2 = float(line.b[1, 0])
+                    pg.draw.circle(self.screen, BLACK, (x, y), 5)
+                    pg.draw.circle(self.screen, BLACK, (x2, y2), 5)
+                    pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
 
 
     def render(self):
