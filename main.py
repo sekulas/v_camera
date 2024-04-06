@@ -9,6 +9,11 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 1, 0)
 PURPLE = (171, 32, 253)
+BLUE = (0, 9, 255)
+PINK = (255, 0, 177)
+YELLOW = (255, 227, 0)
+GREEN = (0, 255, 13)
+ORANGE = (255, 95, 31)
 
 WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
@@ -23,9 +28,6 @@ projection_matrix = np.matrix([
     [0, 0, 0, 1]
 ])    
 
-def is_point_visible(point: np.matrix, focal_len: float) -> bool:
-    return point[1,0] > focal_len
-
 class GraphicsEngine:
     def __init__(self, win_size=(int,int)):
         pg.init()
@@ -38,7 +40,12 @@ class GraphicsEngine:
 
         self.objects = [Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, BLACK, FOCAL_LEN),
                         Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, RED, FOCAL_LEN),
-                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, FOCAL_LEN)]
+                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, BLUE, FOCAL_LEN),
+                        Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, GREEN, FOCAL_LEN),
+                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, YELLOW, FOCAL_LEN),
+                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, PINK, FOCAL_LEN),
+                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, FOCAL_LEN),
+                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, ORANGE, FOCAL_LEN),]
 
         self.camera = Camera(self)
 
@@ -83,10 +90,9 @@ class GraphicsEngine:
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
-                #if is_point_visible(a, FOCAL_LEN) and is_point_visible(b, FOCAL_LEN):
-                print(line.a)
-                line = line.clip().project_3d_to_2d(FOCAL_LEN)
-                if line.a[2, 0] >= 0 and line.b[2, 0] >= 0:
+                line = line.clip()
+                if line.a[2, 0] > 0 and line.b[2, 0] > 0:
+                    line = line.project_3d_to_2d(FOCAL_LEN)
                     x = float(line.a[0, 0])
                     y = float(line.a[1, 0])
                     x2 = float(line.b[0, 0])

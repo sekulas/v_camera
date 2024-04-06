@@ -5,7 +5,7 @@ from objects.line import Line
 BLACK = (0, 0, 0)
 
 class Cube:
-    def __init__(self, x, y, z, color, focal_len, edge_len = 100):
+    def __init__(self, x, y, z, color, focal_len, edge_len = 150):
         self.points = []
         self.lines = []
         self.focal_len = focal_len
