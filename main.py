@@ -114,8 +114,6 @@ class GraphicsEngine:
                     y = float(line.a[1, 0])
                     x2 = float(line.b[0, 0])
                     y2 = float(line.b[1, 0])
-                    #pg.draw.circle(self.screen, BLACK, (x, y), 5)
-                    #pg.draw.circle(self.screen, BLACK, (x2, y2), 5)
                     pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
 
 
