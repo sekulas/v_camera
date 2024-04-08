@@ -18,7 +18,8 @@ ORANGE = (255, 95, 31)
 WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
 
-FOCAL_LEN = 1000
+MIN_FOCAL_LEN = 1000
+MAX_FOCAL_LEN = 2000
 DIST_FROM_CENTER = 100
 
 projection_matrix = np.matrix([
@@ -38,22 +39,31 @@ class GraphicsEngine:
 
         self.clock = pg.time.Clock()
 
-        self.objects = [Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, BLACK, FOCAL_LEN),
-                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, RED, FOCAL_LEN),
-                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, BLUE, FOCAL_LEN),
-                        Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, GREEN, FOCAL_LEN),
-                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, YELLOW, FOCAL_LEN),
-                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, PINK, FOCAL_LEN),
-                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, FOCAL_LEN),
-                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, ORANGE, FOCAL_LEN),]
+        self.objects = [Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, BLACK, MIN_FOCAL_LEN / 2),
+                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, DIST_FROM_CENTER, RED, MIN_FOCAL_LEN / 2),
+                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, BLUE, MIN_FOCAL_LEN / 2),
+                        Cube(DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, GREEN, MIN_FOCAL_LEN / 2),
+                        Cube(-DIST_FROM_CENTER, DIST_FROM_CENTER, -DIST_FROM_CENTER, YELLOW, MIN_FOCAL_LEN / 2),
+                        Cube(DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, PINK, MIN_FOCAL_LEN / 2),
+                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, DIST_FROM_CENTER, PURPLE, MIN_FOCAL_LEN / 2),
+                        Cube(-DIST_FROM_CENTER, -DIST_FROM_CENTER, -DIST_FROM_CENTER, ORANGE, MIN_FOCAL_LEN / 2),]
 
         self.camera = Camera(self)
+
+        self.focal_len = 1000
 
     def check_events(self):        
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_z:
+                    if self.focal_len <= MAX_FOCAL_LEN:
+                        self.focal_len += 100
+                if event.key == pg.K_x:
+                    if self.focal_len >= MIN_FOCAL_LEN:
+                        self.focal_len -= 100
 
         keys = pg.key.get_pressed()
 
@@ -86,19 +96,24 @@ class GraphicsEngine:
         if keys[pg.K_p]:
             self.camera.rotate_counter_clockwise()
 
+        if keys[pg.K_EQUALS]:
+            if self.focal_len <= MAX_FOCAL_LEN:
+                self.focal_len += 100
+        if keys[pg.K_MINUS]:
+            if self.focal_len >= MIN_FOCAL_LEN:
+                self.focal_len -= 100
+
     def draw(self):
         self.screen.fill(WHITE)
         for obj in self.objects:
             for line in obj.lines:
                 line = line.clip()
                 if line.a[2, 0] > 0 and line.b[2, 0] > 0:
-                    line = line.project_3d_to_2d(FOCAL_LEN)
+                    line = line.project_3d_to_2d(self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE)
                     x = float(line.a[0, 0])
                     y = float(line.a[1, 0])
                     x2 = float(line.b[0, 0])
                     y2 = float(line.b[1, 0])
-                    pg.draw.circle(self.screen, BLACK, (x, y), 5)
-                    pg.draw.circle(self.screen, BLACK, (x2, y2), 5)
                     pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
 
 
@@ -115,7 +130,7 @@ class GraphicsEngine:
     def update_points(self, transform_matrix):
         for obj in self.objects:
             for idx, point in enumerate(obj.points):
-                new_point = np.dot(transform_matrix, point)
+                new_point = transform_matrix @ point
                 for p in range(0, 3):
                     obj.points[idx][p] = new_point[p]
 

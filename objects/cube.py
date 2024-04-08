@@ -17,15 +17,15 @@ class Cube:
 
     def __create_points(self, x, y, z):
         d = self.edge_len / 2
-        self.points.append(np.matrix([[-d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[-d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[-d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[d + x], [d + y], [d + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[d + x], [-d + y], [d + self.focal_len + z], [1]], dtype=np.float64))
 
-        self.points.append(np.matrix([[-d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[-d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
-        self.points.append(np.matrix([[d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float16))
+        self.points.append(np.matrix([[-d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[-d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[d + x], [d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float64))
+        self.points.append(np.matrix([[d + x], [-d + y], [d*3 + self.focal_len + z], [1]], dtype=np.float64))
 
     def __init_lines(self):
         for i in range(0, 3):
