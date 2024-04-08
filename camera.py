@@ -3,10 +3,8 @@ import matrix_transformations as mt
 class Camera:
     def __init__(self, app):
         self.app = app
-        self.zoom = 1
         self.step = 5
         self.rotationDegree = 0.05
-        self.zoom_increase = 0.5
 
     def move_up(self):
         translation_up = mt.get_translation_matrix(0, self.step, 0)
@@ -55,16 +53,3 @@ class Camera:
     def rotate_counter_clockwise(self):
         rotate_counter_clockwise = mt.get_rotation_z_matrix(-self.rotationDegree)
         self.app.update_points(rotate_counter_clockwise)
-
-    def zoom_in(self):
-        self.zoom += self.zoom_increase
-        #zoom_in = mt.get_zoom_matrix(self.zoom)
-        #self.app.update_points(zoom_in)
-
-    def zoom_out(self):
-        if(self.zoom - self.zoom_increase > 0):
-            self.zoom -= self.zoom_increase
-        else:
-            print("Cannot zoom_out below 0.")
-        #zoom_out = mt.get_zoom_matrix(self.zoom)
-        #self.app.update_points(zoom_out)
