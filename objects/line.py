@@ -27,14 +27,14 @@ class Line:
         print(point_a)
         return Line(point_a, point_b)
 
-    def project_3d_to_2d(self, focal_len):
+    def project_3d_to_2d(self, focal_len, window_x_size, window_y_size):
         z1 = self.a[2, 0]
         z2 = self.b[2, 0]
 
-        x1 = np.float64(self.a[0, 0]) * focal_len / z1 
-        y1 = np.float64(self.a[1, 0]) * focal_len / z1 
-        x2 = np.float64(self.b[0, 0]) * focal_len / z2 
-        y2 = np.float64(self.b[1, 0]) * focal_len / z2 
+        x1 = np.float64(self.a[0, 0]) * focal_len / z1 + window_x_size / 2
+        y1 = np.float64(self.a[1, 0]) * focal_len / z1 + window_y_size / 2
+        x2 = np.float64(self.b[0, 0]) * focal_len / z2 + window_x_size / 2
+        y2 = np.float64(self.b[1, 0]) * focal_len / z2 + window_y_size / 2
 
         proj_a = np.matrix([[x1], [y1], [z1]], dtype=np.float64)
         proj_b = np.matrix([[x2], [y2], [z2]], dtype=np.float64)

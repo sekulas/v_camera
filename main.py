@@ -109,7 +109,7 @@ class GraphicsEngine:
             for line in obj.lines:
                 line = line.clip()
                 if line.a[2, 0] > 0 and line.b[2, 0] > 0:
-                    line = line.project_3d_to_2d(self.focal_len)
+                    line = line.project_3d_to_2d(self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE)
                     x = float(line.a[0, 0])
                     y = float(line.a[1, 0])
                     x2 = float(line.b[0, 0])
