@@ -106,15 +106,16 @@ class GraphicsEngine:
     def draw(self):
         self.screen.fill(WHITE)
         for obj in self.objects:
-            for line in obj.lines:
-                line = line.clip()
-                if line.a[2, 0] > 0 and line.b[2, 0] > 0:
-                    line = line.project_3d_to_2d(self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE)
-                    x = float(line.a[0, 0])
-                    y = float(line.a[1, 0])
-                    x2 = float(line.b[0, 0])
-                    y2 = float(line.b[1, 0])
-                    pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
+            for triangle in obj.triangles:
+                for line in triangle.lines:
+                    line = line.clip()
+                    if line.a[2, 0] > 0 and line.b[2, 0] > 0:
+                        line = line.project_3d_to_2d(self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE)
+                        x = float(line.a[0, 0])
+                        y = float(line.a[1, 0])
+                        x2 = float(line.b[0, 0])
+                        y2 = float(line.b[1, 0])
+                        pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
 
 
     def render(self):
