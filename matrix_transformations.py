@@ -9,7 +9,7 @@ def get_rotation_x_matrix(radians):
         [0, cos, -sin, 0],
         [0, sin, cos, 0],
         [0, 0, 0, 1]
-    ])
+    ], dtype=np.float64)
 
     return matrix
 
@@ -22,7 +22,7 @@ def get_rotation_y_matrix(radians):
         [0, 1, 0, 0],
         [-sin, 0, cos, 0],
         [0, 0, 0, 1]
-    ])
+    ], dtype=np.float64)
 
     return matrix
 
@@ -35,7 +35,7 @@ def get_rotation_z_matrix(radians):
         [sin, cos, 0, 0],
         [0, 0, 1, 0],
         [0, 0, 0, 1]
-    ])
+    ], dtype=np.float64)
 
     return matrix
 
@@ -45,6 +45,16 @@ def get_translation_matrix(step_x, step_y, step_z):
         [0, 1, 0, step_y],
         [0, 0, 1, step_z],
         [0, 0, 0, 1]
-    ])
+    ], dtype=np.float64)
+
+    return matrix
+
+def get_zoom_matrix(zoom):
+    matrix = np.matrix([
+        [zoom, 0, 0, 0],
+        [0, zoom, 0, 0],
+        [0, 0, zoom, 0],
+        [0, 0, 0, 1]
+    ], dtype=np.float64)
 
     return matrix
