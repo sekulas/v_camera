@@ -9,6 +9,7 @@ class Triangle(object):
         self.c = c
         self.color = color
         self.lines = []
+        self.points = [a, b, c]
 
         self.__init_lines()
 

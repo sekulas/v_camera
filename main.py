@@ -2,6 +2,7 @@ import pygame as pg
 import numpy as np
 from camera import Camera
 from objects.cube import Cube
+#from bsp import BSPNode
 from math import *
 import sys
 
@@ -103,20 +104,38 @@ class GraphicsEngine:
             if self.focal_len >= MIN_FOCAL_LEN:
                 self.focal_len -= 100
 
+    @staticmethod
+    def project_point_3d_to_2d(point, focal_len, window_x_size, window_y_size):
+        z1 = point[2, 0]
+
+        x1 = np.float64(point[0, 0]) * focal_len / z1 + window_x_size / 2
+        y1 = np.float64(point[1, 0]) * focal_len / z1 + window_y_size / 2
+
+        proj_a = np.matrix([[x1], [y1], [z1]], dtype=np.float64)
+
+        return proj_a
+
     def draw(self):
         self.screen.fill(WHITE)
-        for obj in self.objects:
-            for triangle in obj.triangles:
-                for line in triangle.lines:
-                    line = line.clip()
-                    if line.a[2, 0] > 0 and line.b[2, 0] > 0:
-                        line = line.project_3d_to_2d(self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE)
-                        x = float(line.a[0, 0])
-                        y = float(line.a[1, 0])
-                        x2 = float(line.b[0, 0])
-                        y2 = float(line.b[1, 0])
-                        pg.draw.line(self.screen, obj.color, (x, y), (x2, y2))
+        all_triangles = []
 
+        for obj in self.objects:
+            all_triangles.extend(obj.triangles)
+
+        all_triangles.sort(key=lambda tri: (tri.a[2, 0] + tri.b[2, 0] + tri.c[2, 0]) / 3, reverse=True)
+
+        for triangle in all_triangles:
+            points = [GraphicsEngine.project_point_3d_to_2d(point, self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE) \
+                      for point in triangle.points]
+
+            if all(point[2, 0] > 0 for point in points):
+                x1 = float(points[0][0, 0])
+                y1 = float(points[0][1, 0])
+                x2 = float(points[1][0, 0])
+                y2 = float(points[1][1, 0])
+                x3 = float(points[2][0, 0])
+                y3 = float(points[2][1, 0])
+                pg.draw.polygon(self.screen, triangle.color, [(x1, y1), (x2, y2), (x3, y3)])
 
     def render(self):
         pg.display.flip()
