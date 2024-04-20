@@ -17,7 +17,6 @@ PINK = (255, 0, 177)
 YELLOW = (255, 227, 0)
 GREEN = (0, 255, 13)
 ORANGE = (255, 95, 31)
-
 devider = 2
 
 WINDOW_X_SIZE = int(800/devider)
@@ -163,7 +162,7 @@ class GraphicsEngine:
 
     def draw_z_buffer(self):
         self.screen.fill(WHITE)
-        self.z_buffer = [[math.inf for j in range(WINDOW_X_SIZE + 1)] for i in range(WINDOW_Y_SIZE + 1)]
+        self.z_buffer = [[math.inf for j in range(WINDOW_X_SIZE+1)] for i in range(WINDOW_Y_SIZE)]
         all_triangles = []
 
         for obj in self.objects:
@@ -208,7 +207,7 @@ class GraphicsEngine:
         y_range_min1 = int(min(max(points[0].item((1, 0)), 0), WINDOW_Y_SIZE))
         y_range_max1 = int(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
         y_range_min2 = int(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
-        y_range_max2 = int(min(max(points[2].item((1, 0)) + 1, 0), WINDOW_Y_SIZE+1))
+        y_range_max2 = int(min(max(points[2].item((1, 0)), 0), WINDOW_Y_SIZE))
 
         if points[0].item(0, 0) - points[1].item(0, 0) == 0:
             x1 = int(points[0].item(0, 0))
@@ -247,8 +246,8 @@ class GraphicsEngine:
             f3 = lambda yy: [int((yy - b3) / a3)]
 
         for y in range(y_range_min1, y_range_max1):
-            x_range_start = min(max(min(f1(y)), 0), WINDOW_X_SIZE+1)
-            x_range_end = min(max(max(f2(y)), 0), WINDOW_X_SIZE+1)
+            x_range_start = min(max(min(f1(y)), 0), WINDOW_X_SIZE)
+            x_range_end = min(max(max(f2(y)), 0), WINDOW_X_SIZE)
             if x_range_start>x_range_end:
                 tmp = x_range_end
                 x_range_end = x_range_start
@@ -260,8 +259,8 @@ class GraphicsEngine:
                     yield [x, y, z]
 
         for y in range(y_range_min2, y_range_max2):
-            x_range_start = min(max(min(f3(y)), 0), WINDOW_X_SIZE+1)
-            x_range_end = min(max(max(f2(y)), 0), WINDOW_X_SIZE+1)
+            x_range_start = min(max(min(f3(y)), 0), WINDOW_X_SIZE)
+            x_range_end = min(max(max(f2(y)), 0), WINDOW_X_SIZE)
             if x_range_start>x_range_end:
                 tmp = x_range_end
                 x_range_end = x_range_start
