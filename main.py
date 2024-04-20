@@ -169,14 +169,8 @@ class GraphicsEngine:
             all_triangles.extend(obj.triangles)
 
         all_triangles.sort(key=lambda tri: (tri.a[2, 0] + tri.b[2, 0] + tri.c[2, 0]) / 3)
-        iter=0
-        iter2=0
-        seek =63
-        seek2=20
 
         for triangle in all_triangles:
-            if iter>seek:
-                print(triangle.color)
             # a b c
             points_abc = [GraphicsEngine.project_point_3d_to_2d(point, self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE) \
                           for point in triangle.points]

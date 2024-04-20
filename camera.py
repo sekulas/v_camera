@@ -3,7 +3,8 @@ import matrix_transformations as mt
 class Camera:
     def __init__(self, app):
         self.app = app
-        self.step = 5
+        # self.step = 5
+        self.step = 15
         self.rotationDegree = 0.05
 
     def move_up(self):
