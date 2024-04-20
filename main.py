@@ -169,8 +169,14 @@ class GraphicsEngine:
             all_triangles.extend(obj.triangles)
 
         all_triangles.sort(key=lambda tri: (tri.a[2, 0] + tri.b[2, 0] + tri.c[2, 0]) / 3)
+        iter=0
+        iter2=0
+        seek =63
+        seek2=20
 
         for triangle in all_triangles:
+            if iter>seek:
+                print(triangle.color)
             # a b c
             points_abc = [GraphicsEngine.project_point_3d_to_2d(point, self.focal_len, WINDOW_X_SIZE, WINDOW_Y_SIZE) \
                           for point in triangle.points]
@@ -204,10 +210,10 @@ class GraphicsEngine:
         # range generator
         points.sort(key=lambda p: (p.item((1, 0)), p.item((0, 0))))
 
-        y_range_min1 = int(min(max(points[0].item((1, 0)), 0), WINDOW_Y_SIZE))
-        y_range_max1 = int(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
-        y_range_min2 = int(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
-        y_range_max2 = int(min(max(points[2].item((1, 0)), 0), WINDOW_Y_SIZE))
+        y_range_min1 = self.my_ceil(min(max(points[0].item((1, 0)), 0), WINDOW_Y_SIZE))
+        y_range_max1 = self.my_ceil(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
+        y_range_min2 = self.my_ceil(min(max(points[1].item((1, 0)), 0), WINDOW_Y_SIZE))
+        y_range_max2 = self.my_ceil(min(max(points[2].item((1, 0)), 0), WINDOW_Y_SIZE))
 
         if points[0].item(0, 0) - points[1].item(0, 0) == 0:
             x1 = int(points[0].item(0, 0))
@@ -254,7 +260,7 @@ class GraphicsEngine:
                 x_range_start = tmp
             for x in range(x_range_start, x_range_end):
                 z = get_z(x, y)
-                if self.z_buffer[y][x] > z:
+                if self.z_buffer[y][x] > z > 0:
                     self.z_buffer[y][x] = z
                     yield [x, y, z]
 
@@ -267,14 +273,16 @@ class GraphicsEngine:
                 x_range_start = tmp
             for x in range(x_range_start, x_range_end):
                 z = get_z(x, y)
-                if self.z_buffer[y][x] > z:
+                if self.z_buffer[y][x] > z > 0:
                     self.z_buffer[y][x] = z
                     yield [x, y, z]
 
-    @staticmethod
-    def sign(p1, p3, p23):
-        return (p1.item((0, 0)) - p3.item((0, 0))) * p23.item((1, 0)) - p23.item((0, 0)) * (
-                p1.item((1, 0)) - p3.item((1, 0)))
+    def my_ceil(self, num):
+        r=num-num//1
+        if r>0.01:
+            return int(math.ceil(num))
+        else:
+            return int(math.floor(num))
 
     def render(self):
         pg.display.flip()
