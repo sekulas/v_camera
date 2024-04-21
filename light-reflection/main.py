@@ -20,6 +20,7 @@ X_INDEX = 0
 Y_INDEX = 1
 Z_INDEX = 2
 LIGHT_STEP = 10
+SPHERE_SIZE = 100
 
 projection_matrix = np.matrix([
     [1, 0, 0, 0],
@@ -39,6 +40,8 @@ class GraphicsEngine:
         self.clock = pg.time.Clock()
 
         self.light = [0, 0, 0]
+        self.sphere_points = self.__init_sphere()
+        self.redraw = True
 
     def check_events(self):        
         for event in pg.event.get():
@@ -57,10 +60,13 @@ class GraphicsEngine:
                     self.light[Y_INDEX] += LIGHT_STEP
                 if event.key == pg.K_s:
                     self.light[Y_INDEX] -= LIGHT_STEP
+                self.redraw = True
 
 
     def draw(self):
         self.screen.fill(BLACK)
+        for point in self.sphere_points:
+            pg.draw.circle(self.screen, PURPLE, (WINDOW_X_SIZE//2 - point[X_INDEX], WINDOW_Y_SIZE//2 - point[Y_INDEX]), 1)
         pg.draw.circle(self.screen, RED, (WINDOW_X_SIZE//2 - self.light[X_INDEX], WINDOW_Y_SIZE//2 - self.light[Y_INDEX]), 5)
 
 
@@ -70,9 +76,20 @@ class GraphicsEngine:
     def run(self):
         while True:
             self.check_events()
-            self.draw()
+            if(self.redraw):
+                self.draw()
             self.render()
             self.clock.tick(60)
+            self.redraw = False
+
+    def __init_sphere(self):
+        x_range = range(-SPHERE_SIZE, SPHERE_SIZE+1)
+
+        points = [[x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2)] 
+                  for x in x_range 
+                  for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)))]
+
+        return points
 
 if __name__ == '__main__':
     app = GraphicsEngine((WINDOW_X_SIZE, WINDOW_Y_SIZE))
