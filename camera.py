@@ -4,8 +4,8 @@ class Camera:
     def __init__(self, app):
         self.app = app
         # self.step = 5
-        self.step = 15
-        self.rotationDegree = 0.05
+        self.step = 50
+        self.rotationDegree = 0.15
 
     def move_up(self):
         translation_up = mt.get_translation_matrix(0, self.step, 0)

@@ -17,7 +17,7 @@ PINK = (255, 0, 177)
 YELLOW = (255, 227, 0)
 GREEN = (0, 255, 13)
 ORANGE = (255, 95, 31)
-devider = 2
+devider = 1
 
 WINDOW_X_SIZE = int(800/devider)
 WINDOW_Y_SIZE = int(600/devider)
@@ -300,5 +300,5 @@ class GraphicsEngine:
 
 if __name__ == '__main__':
     app = GraphicsEngine((WINDOW_X_SIZE, WINDOW_Y_SIZE))
-    cProfile.run("app.run()")
-    # app.run()
+    #cProfile.run("app.run()")
+    app.run()
