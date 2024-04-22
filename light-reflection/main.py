@@ -1,5 +1,6 @@
 import pygame as pg
 import numpy as np
+from point import Point
 from math import *
 import sys
 
@@ -85,9 +86,9 @@ class GraphicsEngine:
     def __init_sphere(self):
         x_range = range(-SPHERE_SIZE, SPHERE_SIZE+1)
 
-        points = [[x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2)] 
-                  for x in x_range 
-                  for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)))]
+        points = [Point(x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2), PURPLE) 
+            for x in x_range 
+            for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)))]
 
         return points
 

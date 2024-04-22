@@ -22,5 +22,3 @@ class Phong:
     
     def __calc_normal(self, point):
         
-
-    def __calc_normal_vec
