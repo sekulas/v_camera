@@ -3,6 +3,7 @@ import numpy as np
 from point import Point
 from math import *
 import sys
+from phong import Phong
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -32,6 +33,7 @@ projection_matrix = np.matrix([
 
 class GraphicsEngine:
     def __init__(self, win_size=(int,int)):
+        self.aprox = 3
         pg.init()
         pg.display.set_caption("Phong: Light Reflection")
         
@@ -40,9 +42,11 @@ class GraphicsEngine:
 
         self.clock = pg.time.Clock()
 
-        self.light = [0, 0, 0]
+        self.light = [0, 0, -150]
         self.sphere_points = self.__init_sphere()
         self.redraw = True
+        self.camera_position = [0, 0, -300]
+        self.phong = Phong(self,0.5,0.5,"",10)
 
     def check_events(self):        
         for event in pg.event.get():
@@ -53,21 +57,33 @@ class GraphicsEngine:
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     sys.exit()
-                if event.key == pg.K_a:
-                    self.light[X_INDEX] += LIGHT_STEP
-                if event.key == pg.K_d:
-                    self.light[X_INDEX] -= LIGHT_STEP
-                if event.key == pg.K_w:
-                    self.light[Y_INDEX] += LIGHT_STEP
-                if event.key == pg.K_s:
-                    self.light[Y_INDEX] -= LIGHT_STEP
-                self.redraw = True
+
+        keys = pg.key.get_pressed()
+        if keys[pg.K_a]:
+            self.light[X_INDEX] += LIGHT_STEP
+            self.redraw = True
+        elif keys[pg.K_d]:
+            self.light[X_INDEX] -= LIGHT_STEP
+            self.redraw = True
+        if keys[pg.K_w]:
+            self.light[Y_INDEX] += LIGHT_STEP
+            self.redraw = True
+        elif keys[pg.K_s]:
+            self.light[Y_INDEX] -= LIGHT_STEP
+            self.redraw = True
 
 
     def draw(self):
         self.screen.fill(BLACK)
+        max_i=0
         for point in self.sphere_points:
-            pg.draw.circle(self.screen, PURPLE, (WINDOW_X_SIZE//2 - point[X_INDEX], WINDOW_Y_SIZE//2 - point[Y_INDEX]), 1)
+            i=self.phong.calc_light_reflection(point)
+            #self.screen.set_at((WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), point.color)
+            pg.draw.circle(self.screen, point.color, (WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), self.aprox)
+            if i>max_i:
+                max_i=i
+            #pg.draw.circle(self.screen, PURPLE, (WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), self.aprox)
+        print("max i ",i)
         pg.draw.circle(self.screen, RED, (WINDOW_X_SIZE//2 - self.light[X_INDEX], WINDOW_Y_SIZE//2 - self.light[Y_INDEX]), 5)
 
 
@@ -84,11 +100,11 @@ class GraphicsEngine:
             self.redraw = False
 
     def __init_sphere(self):
-        x_range = range(-SPHERE_SIZE, SPHERE_SIZE+1)
+        x_range = range(-SPHERE_SIZE, SPHERE_SIZE+1, self.aprox)
 
         points = [Point(x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2), PURPLE) 
             for x in x_range 
-            for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)))]
+            for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)), self.aprox)]
 
         return points
 
