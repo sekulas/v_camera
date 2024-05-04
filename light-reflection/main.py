@@ -42,11 +42,13 @@ class GraphicsEngine:
 
         self.clock = pg.time.Clock()
 
-        self.light = [0, 0, -150]
+        self.light = [0, 0, -300]
         self.sphere_points = self.__init_sphere()
         self.redraw = True
-        self.camera_position = [0, 0, -300]
-        self.phong = Phong(self,0.5,0.5,"",10)
+        self.camera_position = [0, 0, -200]
+        #self.phong = Phong(self,0.2,0.5,0.5,"",10)
+        self.phong = Phong(self,0.2,0.5,0.5,"",100)
+        #self.phong = Phong(self,0.2,1,0,"",10)
 
     def check_events(self):        
         for event in pg.event.get():
