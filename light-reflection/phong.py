@@ -20,28 +20,23 @@ class Phong:
         #pre_light_vector = np.matrix([light[0]-point.x, light[1]-point.y, light[2]-point.z])
         pre_light_vector = np.matrix([point.x-light[0], point.y-light[1], point.z-light[2]])
         pre_camera_vector = np.matrix([camera[0]-point.x, camera[1]-point.y, camera[2]-point.z])
-        #pre_reflection_vector = (2*self.__calc_cos(pre_surface_vector, pre_light_vector)*pre_light_vector)@pre_surface_vector-pre_light_vector
-        reflected_camera = self.__xxx(point, light, pre_surface_vector)
-        pre_reflection_vector = np.matrix([reflected_camera[0]-point.x, reflected_camera[1]-point.y, reflected_camera[2]-point.z])
+        #pre_reflection_vector = 2*np.dot(pre_light_vector, pre_surface_vector.T)*pre_surface_vector-pre_light_vector
+        #reflected_camera = self.__project_point(point, light, pre_surface_vector)
+        #pre_reflection_vector = np.matrix([reflected_camera[0]-point.x, reflected_camera[1]-point.y, reflected_camera[2]-point.z])
         #pre_reflection_vector = pre_surface_vector-pre_light_vector
 
         surface_vector = self.__calc_normal(pre_surface_vector)
         light_vector = self.__calc_normal(pre_light_vector)
         camera_vector = self.__calc_normal(pre_camera_vector)
-        reflection_vector = self.__calc_normal(pre_reflection_vector)
+        #reflection_vector = self.__calc_normal(pre_reflection_vector)
+        reflection_vector = 2*np.dot(light_vector, surface_vector.T)*surface_vector-light_vector
 
-
-
-        kkk = self.ks
-        if np.dot(surface_vector, light_vector.T)>0:
-            kkk=0
-
-        i = 0*self.ambient-self.kd*np.dot(surface_vector, light_vector.T)+kkk*np.dot(reflection_vector, camera_vector.T)**self.n
+        i = self.ambient-self.kd*np.dot(surface_vector, light_vector.T)+self.ks*np.dot(reflection_vector, camera_vector.T)**self.n
         point.change_illumination(i.item((0,0)))
         return i.item((0,0))
 
 
-    def __xxx(self, start_point, point, vector):
+    def __project_point(self, start_point, point, vector):
         d = (point[0] * vector.item((0, 0)) + point[1] * vector.item((0, 1)) + point[2] * vector.item((0, 2)))
         dd = d-(vector.item((0, 0))+start_point.x+vector.item((0, 1))+start_point.y+vector.item((0, 2))+start_point.z)
         t = dd/(vector.item((0, 0))*vector.item((0, 0))+vector.item((0, 1))*vector.item((0, 1))+vector.item((0, 2))*vector.item((0, 2)))
