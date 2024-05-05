@@ -30,11 +30,13 @@ class Phong:
         camera_vector = self.__calc_normal(pre_camera_vector)
         reflection_vector = self.__calc_normal(pre_reflection_vector)
 
+
+
         kkk = self.ks
-        if self.__calc_dist(light,(point.x,point.y,point.z))>self.__calc_dist(light,(0,0,0)):
+        if np.dot(surface_vector, light_vector.T)>0:
             kkk=0
 
-        i = self.ambient-self.kd*np.dot(surface_vector, light_vector.T)+kkk*np.dot(reflection_vector, camera_vector.T)**self.n
+        i = 0*self.ambient-self.kd*np.dot(surface_vector, light_vector.T)+kkk*np.dot(reflection_vector, camera_vector.T)**self.n
         point.change_illumination(i.item((0,0)))
         return i.item((0,0))
 

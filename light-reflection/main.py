@@ -47,7 +47,7 @@ class GraphicsEngine:
         self.redraw = True
         self.camera_position = [0, 0, -200]
         #self.phong = Phong(self,0.2,0.5,0.5,"",10)
-        self.phong = Phong(self,0.2,0.5,0.5,"",100)
+        self.phong = Phong(self,0.2,0,1,"",100)
         #self.phong = Phong(self,0.2,1,0,"",10)
 
     def check_events(self):        
@@ -87,6 +87,8 @@ class GraphicsEngine:
             #pg.draw.circle(self.screen, PURPLE, (WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), self.aprox)
         print("max i ",i)
         pg.draw.circle(self.screen, RED, (WINDOW_X_SIZE//2 - self.light[X_INDEX], WINDOW_Y_SIZE//2 - self.light[Y_INDEX]), 5)
+        pg.draw.circle(self.screen, ORANGE, (WINDOW_X_SIZE//2 - (0), WINDOW_Y_SIZE//2 - (-80)), 5)
+        print("light ",self.light[X_INDEX],",",self.light[Y_INDEX])
 
 
     def render(self):
