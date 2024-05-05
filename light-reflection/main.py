@@ -14,6 +14,7 @@ PINK = (255, 0, 177)
 YELLOW = (255, 227, 0)
 GREEN = (0, 255, 13)
 ORANGE = (255, 95, 31)
+GREY = (192,192,192)
 
 WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
@@ -33,7 +34,7 @@ projection_matrix = np.matrix([
 
 class GraphicsEngine:
     def __init__(self, win_size=(int,int)):
-        self.aprox = 3
+        self.aprox = 2
         pg.init()
         pg.display.set_caption("Phong: Light Reflection")
         
@@ -46,8 +47,8 @@ class GraphicsEngine:
         self.sphere_points = self.__init_sphere()
         self.redraw = True
         self.camera_position = [0, 0, -200]
-        #self.phong = Phong(self,0.2,0.5,0.5,"",10)
-        self.phong = Phong(self,0,0,1,"",100)
+        self.phong = Phong(self,0.2,0.5,0.5,"",10)
+        #self.phong = Phong(self,0,0,1,"",100)
         #self.phong = Phong(self,0.2,1,0,"",10)
 
     def check_events(self):        
@@ -76,19 +77,11 @@ class GraphicsEngine:
 
 
     def draw(self):
-        self.screen.fill(BLACK)
-        max_i=0
+        self.screen.fill(GREY)
         for point in self.sphere_points:
-            i=self.phong.calc_light_reflection(point)
-            #self.screen.set_at((WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), point.color)
+            self.phong.calc_light_reflection(point)
             pg.draw.circle(self.screen, point.color, (WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), self.aprox)
-            if i>max_i:
-                max_i=i
-            #pg.draw.circle(self.screen, PURPLE, (WINDOW_X_SIZE//2 - point.x, WINDOW_Y_SIZE//2 - point.y), self.aprox)
-        print("max i ",i)
         pg.draw.circle(self.screen, RED, (WINDOW_X_SIZE//2 - self.light[X_INDEX], WINDOW_Y_SIZE//2 - self.light[Y_INDEX]), 5)
-        pg.draw.circle(self.screen, ORANGE, (WINDOW_X_SIZE//2 - (0), WINDOW_Y_SIZE//2 - (0)), 5)
-        print("light ",self.light[X_INDEX],",",self.light[Y_INDEX])
 
 
     def render(self):
