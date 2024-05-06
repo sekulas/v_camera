@@ -8,6 +8,10 @@ class Point:
         self.origin_color = colorsys.rgb_to_hls(color[0]/255, color[1]/255, color[2]/255)
         self.color = color
 
+    def change_color(self, color):
+        self.origin_color = colorsys.rgb_to_hls(color[0]/255, color[1]/255, color[2]/255)
+        self.color = color
+
     def change_illumination(self, new_illumination):
         if new_illumination<0:
             new_illumination=0

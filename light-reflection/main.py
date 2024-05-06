@@ -5,16 +5,13 @@ from math import *
 import sys
 from phong import Phong
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
 RED = (255, 1, 0)
-PURPLE = (171, 32, 253)
-BLUE = (0, 9, 255)
-PINK = (255, 0, 177)
-YELLOW = (255, 227, 0)
-GREEN = (0, 255, 13)
-ORANGE = (255, 95, 31)
 GREY = (192,192,192)
+
+METALIC = (187,187,187)
+BRICK = (188, 74, 60)
+PLASTIC = (0,0,255)
+WOOD = (139,69,19)
 
 WINDOW_X_SIZE = 800
 WINDOW_Y_SIZE = 600
@@ -22,7 +19,7 @@ WINDOW_Y_SIZE = 600
 X_INDEX = 0
 Y_INDEX = 1
 Z_INDEX = 2
-LIGHT_STEP = 10
+LIGHT_STEP = 20
 SPHERE_SIZE = 100
 
 projection_matrix = np.matrix([
@@ -47,9 +44,7 @@ class GraphicsEngine:
         self.sphere_points = self.__init_sphere()
         self.redraw = True
         self.camera_position = [0, 0, -200]
-        self.phong = Phong(self,0.2,0.5,0.5,"",10)
-        #self.phong = Phong(self,0,0,1,"",100)
-        #self.phong = Phong(self,0.2,1,0,"",10)
+        self.phong = Phong(self, 0.1, 0.4, 0.9, "", 150)
 
     def check_events(self):        
         for event in pg.event.get():
@@ -60,6 +55,22 @@ class GraphicsEngine:
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     sys.exit()
+                if event.key == pg.K_1:
+                    self.__change_sphere_color(METALIC)
+                    self.phong = Phong(self, 0.1, 0.4, 0.9, "", 150)
+                    self.redraw = True
+                if event.key == pg.K_2:
+                    self.__change_sphere_color(PLASTIC)
+                    self.phong = Phong(self, 0.2, 0.8, 0.6, "", 50)
+                    self.redraw = True
+                if event.key == pg.K_3:
+                    self.__change_sphere_color(WOOD)
+                    self.phong = Phong(self, 0.3, 0.8, 0.2, "", 20)
+                    self.redraw = True
+                if event.key == pg.K_4:
+                    self.__change_sphere_color(BRICK)
+                    self.phong = Phong(self, 0.3, 0.8, 0.1, "", 10)
+                    self.redraw = True
 
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
@@ -99,11 +110,15 @@ class GraphicsEngine:
     def __init_sphere(self):
         x_range = range(-SPHERE_SIZE, SPHERE_SIZE+1, self.aprox)
 
-        points = [Point(x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2), PURPLE) 
+        points = [Point(x, y, -sqrt(SPHERE_SIZE**2 - x**2 - y**2), METALIC) 
             for x in x_range 
             for y in range(int(-sqrt(SPHERE_SIZE**2 - x**2)), int(sqrt(SPHERE_SIZE**2 - x**2)), self.aprox)]
 
         return points
+    
+    def __change_sphere_color(self, color):
+        for point in self.sphere_points:
+            point.change_color(color);
 
 if __name__ == '__main__':
     app = GraphicsEngine((WINDOW_X_SIZE, WINDOW_Y_SIZE))
