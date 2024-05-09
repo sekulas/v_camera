@@ -57,19 +57,23 @@ class GraphicsEngine:
                     sys.exit()
                 if event.key == pg.K_1:
                     self.__change_sphere_color(METALIC)
-                    self.phong = Phong(self, 0.1, 0.4, 0.9, "", 150)
+                    # self.phong = Phong(self, 0.1, 0.4, 0.9, "", 150)
+                    self.phong = Phong(self, 0.1, 0.1, 0.9, "", 150)
                     self.redraw = True
                 if event.key == pg.K_2:
                     self.__change_sphere_color(PLASTIC)
-                    self.phong = Phong(self, 0.2, 0.8, 0.6, "", 50)
+                    # self.phong = Phong(self, 0.2, 0.8, 0.6, "", 50)
+                    self.phong = Phong(self, 0.2, 0.4, 0.6, "", 50)
                     self.redraw = True
                 if event.key == pg.K_3:
                     self.__change_sphere_color(WOOD)
+                    # self.phong = Phong(self, 0.3, 0.8, 0.2, "", 20)
                     self.phong = Phong(self, 0.3, 0.8, 0.2, "", 20)
                     self.redraw = True
                 if event.key == pg.K_4:
                     self.__change_sphere_color(BRICK)
-                    self.phong = Phong(self, 0.3, 0.8, 0.1, "", 10)
+                    # self.phong = Phong(self, 0.3, 0.8, 0.1, "", 10)
+                    self.phong = Phong(self, 0.3, 0.9, 0.1, "", 10)
                     self.redraw = True
 
         keys = pg.key.get_pressed()
